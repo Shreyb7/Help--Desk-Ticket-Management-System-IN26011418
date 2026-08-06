@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="HelpDesk.Tests/HelpDesk.Tests.csproj" Id="83b3961b-e964-432c-9617-c496e67c9ba1" />
+  <Project Path="HelpDeskMVC/HelpDesk.Mvc.csproj" Id="f824c2e1-2c94-41fe-ba44-a2bea77ee643" />
+  <Project Path="HelpDeskSystem/HelpDesk.Api.csproj" />
+</Solution>
