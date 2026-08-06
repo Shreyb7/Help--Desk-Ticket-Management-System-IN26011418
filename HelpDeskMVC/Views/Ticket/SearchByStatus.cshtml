@@ -1,0 +1,128 @@
+﻿@model IEnumerable<HelpDeskMVC.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Search Tickets";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 fw-semibold">Search Tickets by Status</h2>
+
+    <!-- Search Form -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <form asp-action="SearchByStatus" method="get" class="row g-3 align-items-end">
+
+                <div class="col-md-5">
+                    <label class="form-label fw-semibold">Status</label>
+
+                    <select name="status" class="form-select">
+                        <option value="">Choose Status</option>
+                        <option value="Open" selected="@(ViewData["SearchTitle"]?.ToString() == "Open")">Open</option>
+                        <option value="In Progress" selected="@(ViewData["SearchTitle"]?.ToString() == "In Progress")">In Progress</option>
+                        <option value="Closed" selected="@(ViewData["SearchTitle"]?.ToString() == "Closed")">Closed</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Search
+                    </button>
+                </div>
+
+                <div class="col-md-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary w-100">
+                        Reset
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    @if (ViewData["SearchTitle"] != null)
+    {
+        <h5 class="mb-3">
+            Showing results for:
+            <span class="text-primary">@ViewData["SearchTitle"]</span>
+        </h5>
+    }
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle">
+
+            <thead class="table-light">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Raised By</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.Id</td>
+
+                            <td class="fw-semibold">
+                                @item.Title
+                            </td>
+
+                            <td>@item.Priority</td>
+
+                            <td>
+                                <span class="badge @(item.Status == "Closed" ? "bg-success" : item.Status == "Open" ? "bg-warning text-dark" : "bg-info")">
+                                    @item.Status
+                                </span>
+                            </td>
+
+                            <td>@item.RaisedBy</td>
+
+                            <td class="text-center">
+
+                                <a asp-action="GetTicketDetails"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-info">
+                                    Details
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Edit
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            No matching tickets found.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

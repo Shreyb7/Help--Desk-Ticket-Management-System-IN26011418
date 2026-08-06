@@ -1,0 +1,72 @@
+﻿@model HelpDeskMVC.Models.Ticket
+
+@{
+    ViewData["Title"] = "Support Ticket Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Support Ticket #@Model.Id</h4>
+
+            <span class="badge @(Model.Status == "Closed" ? "bg-success" : (Model.Status == "Open" ? "bg-warning text-dark" : "bg-info"))">
+                @Model.Status
+            </span>
+        </div>
+
+        <div class="card-body">
+
+            <h3 class="fw-semibold text-primary">@Model.Title</h3>
+
+            <hr />
+
+            <p>@Model.Description</p>
+
+            <div class="row mt-4">
+
+                <div class="col-md-4 mb-3">
+                    <strong>Priority</strong><br />
+                    <span class="text-danger">@Model.Priority</span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <strong>Raised By</strong><br />
+                    @Model.RaisedBy
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <strong>Created On</strong><br />
+                    @Model.CreatedDate.ToString("dd MMM yyyy, hh:mm tt")
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer bg-white d-flex justify-content-between">
+
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                Back
+            </a>
+
+            <div>
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-primary">
+                    Edit
+                </a>
+
+                <a asp-action="Delete"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-outline-danger ms-2">
+                    Delete
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

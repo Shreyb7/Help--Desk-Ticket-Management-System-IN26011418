@@ -1,0 +1,149 @@
+@model IEnumerable<HelpDeskMVC.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var totalTickets = Model.Count();
+    var openTickets = Model.Count(t => t.Status == "Open");
+    var closedTickets = Model.Count(t => t.Status == "Closed");
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 fw-semibold">Support Dashboard</h2>
+
+    <!-- Dashboard Cards -->
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <h6>Total Tickets</h6>
+                    <h2 class="fw-bold">@totalTickets</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-warning text-dark shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <h6>Open Tickets</h6>
+                    <h2 class="fw-bold">@openTickets</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <h6>Closed Tickets</h6>
+                    <h2 class="fw-bold">@closedTickets</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h4 class="mb-0">Ticket List</h4>
+
+        <div>
+            <a asp-action="Create" class="btn btn-primary">
+                New Ticket
+            </a>
+
+            <a asp-action="SearchByStatus" class="btn btn-outline-secondary">
+                Search Status
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Ticket Table -->
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle">
+
+            <thead class="table-light">
+
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Id)</th>
+                    <th>@Html.DisplayNameFor(model => model.Title)</th>
+                    <th>@Html.DisplayNameFor(model => model.Priority)</th>
+                    <th>@Html.DisplayNameFor(model => model.Status)</th>
+                    <th>@Html.DisplayNameFor(model => model.RaisedBy)</th>
+                    <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.Id</td>
+
+                            <td class="fw-semibold">
+                                @item.Title
+                            </td>
+
+                            <td>@item.Priority</td>
+
+                            <td>
+                                <span class="badge @(item.Status == "Closed" ? "bg-success" : item.Status == "Open" ? "bg-warning text-dark" : "bg-info")">
+                                    @item.Status
+                                </span>
+                            </td>
+
+                            <td>@item.RaisedBy</td>
+
+                            <td>@item.CreatedDate.ToString("dd MMM yyyy")</td>
+
+                            <td class="text-center">
+
+                                <a asp-action="GetTicketDetails"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-info">
+                                    Details
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Edit
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-danger">
+                                    Delete
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            No support tickets available.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
